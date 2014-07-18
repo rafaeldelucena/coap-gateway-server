@@ -1,0 +1,11 @@
+{
+  "name": "coap-gateway-server",
+  "version": "0.0.1",
+  "description": "Coap Server for gateway GPRS - 802.15.4 server",
+  "main": "index.js",
+  "author": "Rafael de Lucena Valle <rafaeldelucena@gmail.com>",
+  "dependencies": {
+    "coap": "~0.7.1",
+    "ipaddr.js": "~0.1.3"
+  }
+}
