@@ -14,10 +14,12 @@ function isDefined(n) {
 }
 
 server.on('request', function(req, res) {
-    path = req.url;
-    method = req.method;
+    var path = req.url;
+    var method = req.method;
+    var str_payload;
+    // TODO: change this condition
     if (method == 'PUT') {
-        var str_payload = req.payload.toString();
+        str_payload = req.payload.toString();
         if (path == '/gateway/config/ip') {
             if (ip.IPv4.isValid(str_payload)) {
                 var new_addr = ip.parse(str_payload);
@@ -31,17 +33,19 @@ server.on('request', function(req, res) {
                 last_port = new_port;
             }
         }
+        res.end();
     } else if (isDefined(last_address) &&  isDefined(last_port)) {
         var new_path = 'coap://' + last_address + ':' + last_port + req.url;
         console.log('redirecting to gateway on: ' + new_path);
         var new_req = coap.request(new_path)
         new_req.on('response', function(new_res) {
-            console.log(new_res.payload.toString());
-            // TODO send a persistent data or HTTP server
+            str_payload = (new_res.payload.toString());
+            console.log(str_payload);
+            // TODO: send a persistent data or HTTP server
+            res.end(str_payload);
         })
-        new_req.end()
+        new_req.end();
     }
-    res.end()
 })
 
 // the default CoAP port is 5683
